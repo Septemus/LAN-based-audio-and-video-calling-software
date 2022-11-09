@@ -86,7 +86,7 @@
                     sessionStorage.serverIP = result.serverIP;
                     if (result.status === 0) {
                         alert("登录成功,跳转至主界面");
-                        window.location.href = result.url;
+                        window.location.href = "./HomePage.html";
                     }
                     else
                         alert(result.message);
@@ -110,7 +110,7 @@
             }).then(result => {
                 if (result.status === 0) {
                     alert("注册成功,点击回到登陆界面");
-                    window.location.href = result.url;
+                    window.location.reload()
                 }
                 else {
                     alert(result.message);  
