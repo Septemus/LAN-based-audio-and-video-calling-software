@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>主页</title>
+  <!-- 导入 layui 的样式表 -->
+  <link rel="stylesheet" href="./pages/assets/lib/layui/css/layui.css" />
+  <!-- 导入第三方图标库 -->
+  <link rel="stylesheet" href="./pages/assets/css/index.css" />
+  <!-- 导入自己的样式表 -->
+  <link rel="stylesheet" href="./pages/assets/css/index.css" />
+</head>
+
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;" class="userinfo">
+            <img src="http://t.cn/RCzsdCq" class="layui-nav-img" />
+            <span class="text-avatar">A</span>
+            个人中心
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="./pages/user/user_info.html" target="fm">基本资料</a></dd>
+            <dd><a href="./pages/user/user_avatar.html" target="fm">更换头像</a></dd>
+            <dd><a href="./pages/user/user_pwd.html" target="fm">重置密码</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;" id="btnLogout"><span class="iconfont icon-tuichu"></span>退出</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <div class="userinfo">
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img" />
+          <span class="text-avatar">A</span>
+          <span id="welcome"></span>
+        </div>
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-shrink="all">
+          <li class="layui-nav-item layui-this">
+            <a href="./pages/home/dashboard.html" target="fm"><span class="iconfont icon-home"></span>首页</a>
+          </li>
+
+          <li class="layui-nav-item">
+            <a href="javascript:;"><span class="iconfont icon-user"></span>个人中心</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <a href="./pages/user/user_info.html" target="fm"><i class="layui-icon layui-icon-app"></i>基本资料</a>
+              </dd>
+              <dd>
+                <a href="./pages/user/user_avatar.html" target="fm"><i class="layui-icon layui-icon-app"></i>更换头像</a>
+              </dd>
+              <dd>
+                <a href="./pages/user/user_pwd.html" target="fm"><i class="layui-icon layui-icon-app"></i>重置密码</a>
+              </dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <iframe name="fm" src="./pages/home/dashboard.html" frameborder="0"></iframe>
+    </div>
+
+  </div>
+
+  <!-- 导入 layui 的JS文件 -->
+  <script src="./pages/assets/lib/layui/layui.all.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+
+    var welcome = document.getElementById('welcome');
+    welcome.innerHTML = '欢迎 ' + sessionStorage.name;
+    const socket = io(sessionStorage.serverIP + ':3007');
+
+    socket.on("connect", () => {
+      sessionStorage.socketID = socket.id;
+      socket.emit('login', JSON.stringify({ 'id': sessionStorage.id, 'name': sessionStorage.name, 'sid': sessionStorage.socketID }));
+    });
+
+    socket.on('called', (data) => {
+      var info = JSON.parse(data);
+      if (info.calledID == sessionStorage.id) {
+        window.blur(); setTimeout(window.focus(), 100);
+        var r = window.confirm('您正在被' + info.callingID + '呼叫！');
+        if (r == false) {
+          socket.emit('refuse', JSON.stringify({ 'name': sessionStorage.name, 'callingSid': info.callingSid }));
+        }
+        else {
+          window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + info.callingID);
+          socket.emit('agree', info.callingSid);
+        }
+      }
+    })
+
+    socket.on('refuse', (data) => {
+      alert(data + '拒绝了您的通话请求！');
+    });
+
+    socket.on('agree', () => {
+      console.log(1);
+      window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + sessionStorage.id);
+    })
+
+  </script>
+
+</body>
+
+</html>
