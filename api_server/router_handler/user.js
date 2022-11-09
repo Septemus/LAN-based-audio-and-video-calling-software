@@ -61,12 +61,15 @@ exports.regUser = (req, res) => {
 
 // 登录的处理函数
 exports.login = (req, res) => {
-
+  console.log("login post received!")
   const userinfo = req.body;
-
+  console.log(userinfo)
   const sql = 'select * from users where id = ?';
   db.query(sql, userinfo.id, (err, results) => {
-    if (err) return res.cc(err);
+    if (err) {
+      console.log("error!")
+      return res.cc(err);
+    }
     if (results.length !== 1) return res.cc('登陆失败');
 
     //比较密码是否正确
