@@ -37,33 +37,9 @@
     </div>
 
     <div class="layui-side layui-bg-black">
-      <div class="layui-side-scroll">
-        <div class="userinfo">
-          <!-- <img src="http://t.cn/RCzsdCq" class="layui-nav-img" />
-          <span class="text-avatar">A</span> -->
-          <span id="welcome"></span>
-        </div>
-        <ul class="layui-nav layui-nav-tree" lay-shrink="all">
-          <!-- <li class="layui-nav-item layui-this">
-            <a href="./pages/home/dashboard.html" target="fm"><span class="iconfont icon-home"></span>首页</a>
-          </li> -->
-
-          <li class="layui-nav-item">
-            <a href="javascript:;"><span class="iconfont icon-user"></span>个人中心</a>
-            <dl class="layui-nav-child">
-              <dd>
-                <a href="./pages/user/user_info.html" target="fm"><i class="layui-icon layui-icon-app"></i>基本资料</a>
-              </dd>
-              <dd>
-                <a href="./pages/user/user_avatar.html" target="fm"><i class="layui-icon layui-icon-app"></i>更换头像</a>
-              </dd>
-              <dd>
-                <a href="./pages/user/user_pwd.html" target="fm"><i class="layui-icon layui-icon-app"></i>重置密码</a>
-              </dd>
-            </dl>
-          </li>
-        </ul>
-      </div>
+      <a href="./HomePage.html">
+        <div class="layui-side-scroll"><span>主页</span></div>
+      </a>
     </div>
 
     <div class="layui-body">
@@ -81,6 +57,7 @@
 
     var welcome = document.getElementById('welcome');
     welcome.innerHTML = '欢迎 ' + sessionStorage.name;
+
     const socket = io(sessionStorage.serverIP + ':3007');
 
     socket.on("connect", () => {
