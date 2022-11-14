@@ -14,12 +14,15 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^10.1.2",
+    "cordova-plugin-splashscreen": "^6.0.2",
     "whitelist": "^1.0.2"
   },
   "cordova": {
     "platforms": [
       "android"
     ],
-    "plugins": {}
+    "plugins": {
+      "cordova-plugin-splashscreen": {}
+    }
   }
 }
