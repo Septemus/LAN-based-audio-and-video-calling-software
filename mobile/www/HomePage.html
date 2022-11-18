@@ -51,15 +51,11 @@
 
   <!-- 导入 layui 的JS文件 -->
   <script src="./pages/assets/lib/layui/layui.all.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="./javascript/socket.io.js"></script>
   <script>
-
-
-    var welcome = document.getElementById('welcome');
-    welcome.innerHTML = '欢迎 ' + sessionStorage.name;
-
-    const socket = io(sessionStorage.serverIP + ':3007');
-
+    console.log(sessionStorage.serverIP)
+    const socket = io('http://'+sessionStorage.serverIP + ':3007');
+    // alert(socket.id)
     socket.on("connect", () => {
       sessionStorage.socketID = socket.id;
       socket.emit('login', JSON.stringify({ 'id': sessionStorage.id, 'name': sessionStorage.name, 'sid': sessionStorage.socketID }));

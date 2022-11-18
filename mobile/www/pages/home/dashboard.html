@@ -11,13 +11,14 @@
     </tbody>
 </table>
 
-<script src='/socket.io/socket.io.js'></script>
+<script src='../../javascript/socket.io.js'></script>
 <script>
     //console.log(sessionStorage.name);
     const socket = io(sessionStorage.serverIP + ':3007');
     var table = document.getElementById('table');
 
     socket.on('init', data => {
+        console.log('initializing')
         for (var i = 0; i < data.length; i++) {
             if (data[i].id != sessionStorage.id) {
                 var tr = document.createElement('tr');
@@ -53,6 +54,7 @@
     })
 
     socket.on('online', (data) => {
+        alert('online triggered!')
         var user = JSON.parse(data);
         if (user.id != sessionStorage.id) {
             //动态创建行

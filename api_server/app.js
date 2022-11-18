@@ -7,7 +7,7 @@ const os = require('os');
 // 获取IP地址
 function getIpAddress() {
   var interfaces = os.networkInterfaces() //获取网络接口
-  console.log(interfaces)
+  // console.log(interfaces)
   for (var dev in interfaces) {
     let iface = interfaces[dev]
 
@@ -27,13 +27,13 @@ const httpServer = createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://" + ip + ":3007",
+    origin: "*",
   }
 });
 // 导入并配置 cors 中间件
 const cors = require('cors');
 app.use(cors());
-
+console.log(app)
 
 
 //设置静态登陆界面
