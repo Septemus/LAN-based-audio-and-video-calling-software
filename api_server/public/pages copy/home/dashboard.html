@@ -1,0 +1,99 @@
+<h4>在线用户列表</h4>
+<table border="1" id="table">
+    <thead>
+        <th>socketID</th>
+        <th>用户ID</th>
+        <th>用户昵称</th>
+    </thead>
+
+    <tbody>
+
+    </tbody>
+</table>
+
+<script src='/socket.io/socket.io.js'></script>
+<script>
+    //console.log(sessionStorage.name);
+    const socket = io(sessionStorage.serverIP + ':3007');
+    var table = document.getElementById('table');
+
+    socket.on('init', data => {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id != sessionStorage.id) {
+                var tr = document.createElement('tr');
+                table.appendChild(tr);
+                //创建Sid栏
+                var td_sid = document.createElement('td');
+                td_sid.innerHTML = data[i].sid;
+                tr.appendChild(td_sid);
+                //创建id栏
+                var td_id = document.createElement('td');
+                td_id.innerHTML = data[i].id;
+                td_id.id = data[i].id;
+                tr.appendChild(td_id);
+                //创建name栏
+                var td_name = document.createElement('td');
+                td_name.innerHTML = data[i].name;
+                tr.appendChild(td_name);
+                //创建会话图标栏
+                var td_RTC = document.createElement('td');
+                //创建图标
+                var button = document.createElement('button');
+                button.addEventListener('click', () => {
+                    var data = JSON.stringify({ 'callingID': sessionStorage.id, 'calledID': td_id.id, 'callingSid': sessionStorage.socketID });
+                    socket.emit('calling', data);
+                });
+                var img = document.createElement('img');
+                img.setAttribute('src', '../assets/images/camera.webp');
+                img.setAttribute('height', '30px');
+                button.appendChild(img);
+                tr.appendChild(button);
+            }
+        }
+    })
+
+    socket.on('online', (data) => {
+        var user = JSON.parse(data);
+        if (user.id != sessionStorage.id) {
+            //动态创建行
+            var tr = document.createElement('tr');
+            table.appendChild(tr);
+            //创建Sid栏
+            var td_sid = document.createElement('td');
+            td_sid.innerHTML = user.sid;
+            tr.appendChild(td_sid);
+            //创建id栏
+            var td_id = document.createElement('td');
+            td_id.innerHTML = user.id;
+            td_id.id = user.id;
+            tr.appendChild(td_id);
+            //创建name栏
+            var td_name = document.createElement('td');
+            td_name.innerHTML = user.name;
+            tr.appendChild(td_name);
+            //创建会话图标栏
+            var td_RTC = document.createElement('td');
+            //创建图标
+            var button = document.createElement('button');
+            button.addEventListener('click', () => {
+                var data = JSON.stringify({ 'callingID': sessionStorage.id, 'calledID': td_id.id, 'callingSid': sessionStorage.socketID });
+                socket.emit('calling', data);
+            });
+            var img = document.createElement('img');
+            img.setAttribute('src', '../assets/images/camera.webp');
+            img.setAttribute('height', '30px');
+            button.appendChild(img);
+            tr.appendChild(button);
+        }
+    });
+
+    socket.on('offline', (data) => {
+        const table = document.getElementById('table');
+        for (var i = 1; i < table.rows.length; i++) {
+            //console.log(table.rows[i].cells[0].innerHTML);
+            if (table.rows[i].cells[0].innerHTML == data)
+                table.deleteRow(i);
+        }
+    });
+
+</script>

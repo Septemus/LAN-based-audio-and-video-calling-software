@@ -26,4 +26,5 @@
     <!--    跨域cors    -->
     <preference name="AndroidInsecureFileModeEnabled" value="true" />
     <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashMaintainAspectRatio" value="false" />
 </widget>

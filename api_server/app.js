@@ -7,6 +7,7 @@ const os = require('os');
 // 获取IP地址
 function getIpAddress() {
   var interfaces = os.networkInterfaces() //获取网络接口
+  console.log(interfaces)
   for (var dev in interfaces) {
     let iface = interfaces[dev]
 

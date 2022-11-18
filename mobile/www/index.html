@@ -69,12 +69,13 @@
             login_box.classList.remove('hidden');
         })
         //登陆
-        const ip = '10.69.246.202';
+        const ip = '192.168.194.55';
         let login_btn = document.getElementById('login_btn');
         let id = document.getElementById('id');
         let password = document.getElementById('password');
         $('#login_btn').on('click', function () {
             var params = 'id=' + id.value + '&password=' + password.value;
+            console.log("clicked login")
             $.ajax({
                 type: 'post',
                 url: 'http://' + ip + ':3007/api/login',
@@ -94,7 +95,6 @@
                 }
             })
         })
-
         let register = document.getElementById('register');
         let Rid = document.getElementById('Rid');
         let Rname = document.getElementById('Rname');
