@@ -57,16 +57,9 @@ io.on('connection', function (socket) {
     for (const socket of sockets)
       console.log(socket.id);
   });
-   socket.on("sendMsg",function (data) {
-     //data 为客户端发送的消息，可以是 字符串，json对象或buffer
-    // 使用 emit 发送消息，broadcast 表示 除自己以外的所有已连接的socket客户端。
-    console.log('1');
-    socket.broadcast.to('rooms').emit('receiveMsg', data);
-     io.sockets.emit("receiveMsg",data);
-  })
 });
 
 
-httpsServer.listen(HTTPS_PORT, '0.0.0.0');
+httpsServer.listen(HTTPS_PORT, '192.168.34.55');
 console.log('Server running. Visit https://localhost:' + HTTPS_PORT + ' in Firefox/Chrome'
 );

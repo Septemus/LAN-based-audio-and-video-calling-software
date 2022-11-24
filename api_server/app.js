@@ -7,20 +7,19 @@ const os = require('os');
 // 获取IP地址
 function getIpAddress() {
   var interfaces = os.networkInterfaces() //获取网络接口
-  // console.log(interfaces)
   for (var dev in interfaces) {
     let iface = interfaces[dev]
-
     for (let i = 0; i < iface.length; i++) {
       let { family, address, internal } = iface[i]
-
-      if (family === 'IPv4' && address !== '127.0.0.1' && !internal) {
+      if (dev === 'WLAN' && family === 'IPv4' && address !== '127.0.0.1' && !internal) {
         return address
       }
     }
   }
 }
+
 const ip = getIpAddress();
+// console.log(ip)
 //引入socket.io
 const { createServer } = require("http");
 const httpServer = createServer(app);
@@ -33,7 +32,7 @@ const io = new Server(httpServer, {
 // 导入并配置 cors 中间件
 const cors = require('cors');
 app.use(cors());
-console.log(app)
+// console.log(app)
 
 
 //设置静态登陆界面
@@ -82,10 +81,11 @@ const L = require("list");
 var l = L.list(); //用户列表
 
 io.on('connect', (socket) => {
+  console.log(socket.id)
   io.to(socket.id).emit('init', L.toArray(l));
-
   socket.on('login', (data) => {
     const info = JSON.parse(data);
+    console.log(info)
     l = L.append({ 'sid': info.sid, 'id': info.id, 'name': info.name }, l);//当io监听到有人登录 将sid、id和名字添加到list
     io.emit('online', data);
   })
@@ -102,6 +102,7 @@ io.on('connect', (socket) => {
   })
 
   socket.on('calling', (data) => {
+    console.log('calling socket req received!',data)
     io.emit('called', data);
   });
 
@@ -111,8 +112,8 @@ io.on('connect', (socket) => {
   });
 
   socket.on('agree', callingSid => {
-    console.log(callingSid);
-    io.to(callingSid).emit('agree',);
+    console.log(callingSid+`'s invitation has been accepted!`);
+    io.to(callingSid).emit('agree');
   })
 })
 

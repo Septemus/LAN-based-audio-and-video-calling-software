@@ -14,9 +14,9 @@
 <script src='../../javascript/socket.io.js'></script>
 <script>
     //console.log(sessionStorage.name);
-    const socket = io(sessionStorage.serverIP + ':3007');
+    const socket = io('http://'+sessionStorage.serverIP + ':3007');
     var table = document.getElementById('table');
-
+    console.log(socket)
     socket.on('init', data => {
         console.log('initializing')
         for (var i = 0; i < data.length; i++) {
@@ -54,7 +54,7 @@
     })
 
     socket.on('online', (data) => {
-        alert('online triggered!')
+        // alert('online triggered!')
         var user = JSON.parse(data);
         if (user.id != sessionStorage.id) {
             //动态创建行

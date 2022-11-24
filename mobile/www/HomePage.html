@@ -53,9 +53,11 @@
   <script src="./pages/assets/lib/layui/layui.all.js"></script>
   <script src="./javascript/socket.io.js"></script>
   <script>
-    console.log(sessionStorage.serverIP)
+    // console.log(sessionStorage.serverIP)
     const socket = io('http://'+sessionStorage.serverIP + ':3007');
-    // alert(socket.id)
+    console.log(socket)
+    // alert(socket.url)
+    // console.log(socket[url])
     socket.on("connect", () => {
       sessionStorage.socketID = socket.id;
       socket.emit('login', JSON.stringify({ 'id': sessionStorage.id, 'name': sessionStorage.name, 'sid': sessionStorage.socketID }));
@@ -70,8 +72,9 @@
           socket.emit('refuse', JSON.stringify({ 'name': sessionStorage.name, 'callingSid': info.callingSid }));
         }
         else {
-          window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + info.callingID);
           socket.emit('agree', info.callingSid);
+          console.log(info.callingSid+`'s invitation has been accepted`)
+          window.location.href='https://' + sessionStorage.serverIP + ':8443/index.html?room=' + info.callingID;
         }
       }
     })
@@ -81,8 +84,10 @@
     });
 
     socket.on('agree', () => {
-      console.log(1);
-      window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + sessionStorage.id);
+      console.log('your invitation has been accepted!');
+      console.log(sessionStorage.serverIP)
+      console.log(sessionStorage.id)
+      window.location.href='https://' + sessionStorage.serverIP + ':8443/index.html?room=' + sessionStorage.id;
     })
 
   </script>

@@ -93,15 +93,18 @@
 
     socket.on('called', (data) => {
       var info = JSON.parse(data);
+      console.log('this is info inside called:',info)
       if (info.calledID == sessionStorage.id) {
+        console.log('Woops,it seems you are being called!')
         window.blur(); setTimeout(window.focus(), 100);
         var r = window.confirm('您正在被' + info.callingID + '呼叫！');
         if (r == false) {
           socket.emit('refuse', JSON.stringify({ 'name': sessionStorage.name, 'callingSid': info.callingSid }));
         }
         else {
-          window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + info.callingID+'&id='+sessionStorage.id);
+          // window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + info.callingID+'&id='+sessionStorage.id);
           socket.emit('agree', info.callingSid);
+          window.location.href='https://' + sessionStorage.serverIP + ':8443/index.html?room=' + info.callingID+'&id='+sessionStorage.id;
         }
       }
     })
@@ -112,7 +115,10 @@
 
     socket.on('agree', () => {
       console.log(1);
-      window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + sessionStorage.id+'&id='+sessionStorage.id);
+      
+      // window.open('https://' + sessionStorage.serverIP + ':8443/index.html?room=' + sessionStorage.id+'&id='+sessionStorage.id);
+      console.log('your invitation has been accepted!')
+      window.location.href='https://' + sessionStorage.serverIP + ':8443/index.html?room=' + sessionStorage.id+'&id='+sessionStorage.id;
     })
 
   </script>
