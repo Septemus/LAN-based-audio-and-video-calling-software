@@ -14,7 +14,7 @@ function getIpAddress() {
     let iface = interfaces[dev]
     for (let i = 0; i < iface.length; i++) {
       let { family, address, internal } = iface[i]
-      if (dev === 'WLAN' && family === 'IPv4' && address !== '127.0.0.1' && !internal) {
+      if (dev.search('WLAN')!=-1&&family === 'IPv4' && address !== '127.0.0.1' && !internal) {
         return address
       }
     }

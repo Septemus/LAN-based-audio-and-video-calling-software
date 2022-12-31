@@ -22,7 +22,20 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // Create a server for handling websocket calls
 //const io = new WebSocketServer({ server: httpsServer });
-
+const os=require('os')
+function getIpAddress() {
+  var interfaces = os.networkInterfaces() //获取网络接口
+  for (var dev in interfaces) {
+    let iface = interfaces[dev]
+    for (let i = 0; i < iface.length; i++) {
+      let { family, address, internal } = iface[i]
+      if (dev.search('WLAN')!=-1&&family === 'IPv4' && address !== '127.0.0.1' && !internal) {
+        return address
+      }
+    }
+  }
+}
+const ip=getIpAddress()
 io.on('connection', function (socket) {
   // const sockets = io.allSockets();
   // console.log(sockets);
@@ -60,6 +73,6 @@ io.on('connection', function (socket) {
 });
 
 
-httpsServer.listen(HTTPS_PORT, '192.168.74.55');
-console.log('Server running. Visit https://localhost:' + HTTPS_PORT + ' in Firefox/Chrome'
+httpsServer.listen(HTTPS_PORT, ip);
+console.log(`Server running. Visit https://${ip}:` + HTTPS_PORT + ' in Firefox/Chrome'
 );
