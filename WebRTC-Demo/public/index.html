@@ -42,10 +42,10 @@
     var sendMsg=document.getElementById("sendMsg");
     var btn_send=document.getElementById("btn_send");
     btn_send.addEventListener("click",function () {
-        var data={client:id  ,msg:sendMsg.value};
+        var data={rooms:room  ,msg:sendMsg.value,client:id};
       //给服务端发送 sendMsg事件名的消息
-        socket.emit("sendMsg",data);
-      content.value+="id";
+        console.log('you sent a msg!')
+        socket.emit("txt_message",data);
       sendMsg.value="";
       
     });

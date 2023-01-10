@@ -12,7 +12,7 @@
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" /> -->
+    <allow-intent href="https://*/*" />
     <allow-intent href="*" />
     <access origin="*" />
     
@@ -21,10 +21,16 @@
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
         <activity android:usesCleartextTraffic="true" />
         </edit-config>
+        <allow-intent href="market:*" />
         <!--  android:usesCleartextTraffic="true"是必须的    -->
     </platform>
     <!--    跨域cors    -->
     <preference name="AndroidInsecureFileModeEnabled" value="true" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="SplashMaintainAspectRatio" value="false" />
+    <!-- <preference name="xwalkMultipleApk" value="true" /> -->
+    <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
+    <platform name="android">
+        <preference name="android-minSdkVersion" value="26" />
+    </platform>
 </widget>

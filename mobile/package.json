@@ -14,7 +14,14 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-android": "^10.1.2",
+    "cordova-plugin-android-permissions": "^1.1.5",
+    "cordova-plugin-camera": "^6.0.0",
+    "cordova-plugin-chrome-apps-audiocapture": "^1.0.5",
+    "cordova-plugin-chrome-apps-videocapture": "^1.0.4",
+    "cordova-plugin-file": "^7.0.0",
+    "cordova-plugin-media-capture": "^4.0.0",
     "cordova-plugin-splashscreen": "^6.0.2",
+    "crosswalk": "^1.5.0",
     "whitelist": "^1.0.2"
   },
   "cordova": {
@@ -22,7 +29,14 @@
       "android"
     ],
     "plugins": {
-      "cordova-plugin-splashscreen": {}
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      },
+      "cordova-plugin-media-capture": {},
+      "cordova-plugin-chrome-apps-videocapture": {},
+      "cordova-plugin-chrome-apps-audiocapture": {}
     }
   }
 }

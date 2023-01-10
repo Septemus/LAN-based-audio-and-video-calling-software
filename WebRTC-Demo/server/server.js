@@ -43,9 +43,10 @@ io.on('connection', function (socket) {
   // for (const socket of sockets)
   //   console.log(socket.id);
 
-  socket.on('message', function (message) {
-    var data = JSON.parse(message);
-    io.to(data.rooms).emit('message', message);
+  socket.on('txt_message', function (message) {
+    console.log('socket.txt_message triggered in server.js')
+
+    io.to(message.rooms).emit('receiveMsg', message);
   });
 
   socket.on('error', (err) => {
@@ -70,6 +71,12 @@ io.on('connection', function (socket) {
     for (const socket of sockets)
       console.log(socket.id);
   });
+  socket.on('message',(msg)=>{
+    console.log('server received message event')
+    var data=JSON.parse(msg)
+    io.to(data.rooms).emit('message',msg)
+    // console.log(JSON.parse(msg))
+  })
 });
 
 

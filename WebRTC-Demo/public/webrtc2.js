@@ -17,7 +17,7 @@ var peerConnectionConfig = {
 
 function pageReady() {
     uuid = createUUID();
-    console.log(uuid);
+    console.log('this is uuid:',uuid);
     localVideo = document.getElementById('localVideo');
     remoteVideo = document.getElementById('remoteVideo');
 
@@ -28,7 +28,7 @@ function pageReady() {
         var signal = JSON.parse(message);
         // Ignore messages from ourself
         if (signal.uuid == uuid) return;
-        console.log(signal.uuid);
+        console.log(`this is signal.uuid:${signal.uuid}`);
         if (signal.sdp) {
             peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function () {
                 // Only create answers in response to offers
@@ -44,13 +44,14 @@ function pageReady() {
 
     var constraints = {
         video: true,
-        audio: true,
+        audio: false,
     };
 
     if (navigator.mediaDevices.getUserMedia) {
+        console.log('yeah your device is ok~')
         navigator.mediaDevices.getUserMedia(constraints).then(getUserMediaSuccess).catch(errorHandler);
     } else {
-        alert('Your browser does not support getUserMedia API');
+        console.log('Your browser does not support getUserMedia API');
     }
 }
 
@@ -67,7 +68,7 @@ function start(isCaller) {
     //客户端上传自己的ice candidate，以便stun服务器协助通信
     peerConnection.onicecandidate = gotIceCandidate;
     peerConnection.ontrack = gotRemoteStream;
-    peerConnection.addStream(localStream);
+    if(localStream) peerConnection.addStream(localStream);
 
     //若isCaller的值为true，则执行createOffer函数，向被叫发送视频连接请求
     if (isCaller) {
@@ -112,9 +113,11 @@ function createdDescription(description) {
 function gotRemoteStream(event) {
     console.log('got remote stream');
     remoteVideo.srcObject = event.streams[0];
+    console.log(remoteVideo.srcObject)
 }
 
 function errorHandler(error) {
+    alert(error.toString())
     console.log(error);
 }
 
@@ -124,6 +127,9 @@ function createUUID() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
     }
+
+    
+
 
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
