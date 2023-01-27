@@ -1,0 +1,4 @@
+#Fri Jan 27 18:16:48 CST 2023
+base.0=E\:\\Programming\\GITEE_PROJ\\lan\\Cordova-Mobile\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
